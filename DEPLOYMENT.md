@@ -52,6 +52,7 @@ Vercel is optimized for React/Vite applications.
     - **Root Directory:** `frontend`.
     - **Build Command:** `npm run build`.
     - **Output Directory:** `dist`.
+    - **Important:** Ensure the "Build Command" is exactly `npm run build` and NOT `npm run built`.
 4.  **Environment Variables:** Add the following:
     - `VITE_API_URL`: The URL of your AWS App Runner service (e.g., `https://xxxxxx.us-east-1.awsapprunner.com/api`).
 5.  **Deploy:** Click **"Deploy"**.
