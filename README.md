@@ -146,7 +146,7 @@ The login page has one-tap buttons that pre-fill each set of credentials.
 | --------------- | ------------------------------------------------ | ------------------------------------ |
 | `PORT`          | `5000`                                           | API port                             |
 | `NODE_ENV`      | `development`                                    | Hides stack traces when `production` |
-| `MONGO_URI`     | `mongodb://127.0.0.1:27017/team_task_system`     | MongoDB connection string            |
+| `MONGO_URI`     | `mongodb+srv://user:password@cluster.mongodb.net/Team_Tasks?retryWrites=true&w=majority`     | MongoDB connection string            |
 | `JWT_SECRET`    | `change-me-in-production`                         | **Set a long random value**          |
 | `JWT_EXPIRES_IN`| `7d`                                             | Token lifetime                       |
 | `CLIENT_URL`    | `http://localhost:5173`                          | Allowed CORS origin                  |
