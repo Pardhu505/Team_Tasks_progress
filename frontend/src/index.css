@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light theme — "paper & ink" */
+  --bg: 244 245 248;
+  --surface: 255 255 255;
+  --surface-2: 247 248 251;
+  --line: 226 230 237;
+  --ink: 18 24 38;
+  --muted: 92 102 122;
+  --faint: 140 150 168;
+  --signal: 13 148 136; /* teal */
+  --signal-soft: 204 240 235;
+  --good: 16 152 110;
+  --warn: 201 138 12;
+  --bad: 208 64 64;
+  --info: 37 99 175;
+}
+
+.dark {
+  /* Dark theme — "ink command center" */
+  --bg: 11 15 24;
+  --surface: 19 25 38;
+  --surface-2: 26 33 49;
+  --line: 38 47 66;
+  --ink: 233 238 247;
+  --muted: 156 167 187;
+  --faint: 108 120 142;
+  --signal: 45 212 191; /* brighter teal for dark */
+  --signal-soft: 18 54 52;
+  --good: 52 199 153;
+  --warn: 233 178 64;
+  --bad: 240 113 113;
+  --info: 96 165 250;
+}
+
+* {
+  border-color: rgb(var(--line));
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font-family: '"Plus Jakarta Sans"', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Atmospheric background — subtle signal-tinted glow, not flat color. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60rem 40rem at 12% -10%, rgb(var(--signal) / 0.08), transparent 60%),
+    radial-gradient(50rem 40rem at 100% 0%, rgb(var(--info) / 0.06), transparent 55%);
+  pointer-events: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+  border-radius: 99px;
+  border: 2px solid rgb(var(--bg));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--faint));
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-line rounded-2xl shadow-card;
+  }
+  .input {
+    @apply w-full rounded-xl bg-surface-2 border border-line px-3.5 py-2.5 text-sm text-ink
+      placeholder:text-faint outline-none transition
+      focus:border-signal focus:ring-2 focus:ring-signal/30;
+  }
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-muted mb-1.5;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold
+      transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-signal text-white hover:brightness-110 shadow-glow;
+  }
+  .btn-ghost {
+    @apply btn bg-surface-2 text-ink border border-line hover:border-signal/50;
+  }
+  .btn-danger {
+    @apply btn bg-bad/10 text-bad border border-bad/30 hover:bg-bad/20;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgb(var(--surface-2));
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--line) / 0.6),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
