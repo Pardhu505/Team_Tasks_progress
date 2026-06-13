@@ -9,8 +9,9 @@ export const ROLES = ['Admin', 'Manager', 'Employee'];
 
 // Default employee roster from the specification — all in the Data department.
 export const DEFAULT_EMPLOYEES = [
-  { employeeName: 'Ankit Kumar', department: DEFAULT_DEPARTMENT },
+  { employeeName: 'Ankit', department: DEFAULT_DEPARTMENT },
   { employeeName: 'Hari Krishna', department: DEFAULT_DEPARTMENT },
-  { employeeName: 'Vidya', department: DEFAULT_DEPARTMENT },
+  { employeeName: 'Vidya Kolati', department: DEFAULT_DEPARTMENT },
   { employeeName: 'Faisal', department: DEFAULT_DEPARTMENT },
+  { employeeName: 'Pardhasaradhi', department: DEFAULT_DEPARTMENT },
 ];
