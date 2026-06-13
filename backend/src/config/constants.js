@@ -1,7 +1,7 @@
 // Centralized domain constants shared across models, controllers and seed.
 // "Data" is the default department for all employees.
 export const DEFAULT_DEPARTMENT = 'Data';
-export const DEPARTMENTS = ['Data', 'IT', 'HR', 'Finance', 'Operations', 'Marketing'];
+export const DEPARTMENTS = ['Data','DMC','Media'];
 
 export const TASK_STATUSES = ['Not Yet Started', 'WIP', 'Completed'];
 
