@@ -6,24 +6,7 @@ import { connectDB } from '../config/db.js';
 import User from '../models/User.js';
 import Employee from '../models/Employee.js';
 import Task from '../models/Task.js';
-import { DEFAULT_EMPLOYEES, TASK_STATUSES } from '../config/constants.js';
-
-const daysFromNow = (n) => {
-  const d = new Date();
-  d.setDate(d.getDate() + n);
-  return d;
-};
-
-const SAMPLE_TASK_TITLES = [
-  ['API Development', 'Build the task management REST endpoints'],
-  ['UI Dashboard', 'Implement KPI cards and analytics charts'],
-  ['Database Schema', 'Design and index the Mongo collections'],
-  ['Auth Module', 'JWT login and role-based access control'],
-  ['Onboarding Docs', 'Write the new-hire onboarding handbook'],
-  ['Quarterly Report', 'Compile Q2 progress for leadership review'],
-  ['Bug Triage', 'Review and prioritize the open defect backlog'],
-  ['Client Demo', 'Prepare and rehearse the customer walkthrough'],
-];
+import { DEFAULT_EMPLOYEES } from '../config/constants.js';
 
 const seed = async () => {
   await connectDB();
@@ -44,31 +27,10 @@ const seed = async () => {
   ]);
 
   console.log('… creating employees');
-  const employees = await Employee.create(DEFAULT_EMPLOYEES);
+  await Employee.create(DEFAULT_EMPLOYEES);
 
-  console.log('… creating sample tasks');
-  const tasks = [];
-  employees.forEach((emp, ei) => {
-    for (let i = 0; i < 4; i += 1) {
-      const [title, desc] = SAMPLE_TASK_TITLES[(ei * 2 + i) % SAMPLE_TASK_TITLES.length];
-      const status = TASK_STATUSES[(ei + i) % TASK_STATUSES.length];
-      // Mix of past and future target dates to generate overdue + trend data.
-      const offset = (i - 1) * 9 - ei * 3;
-      tasks.push({
-        employeeId: emp._id,
-        employeeName: emp.employeeName,
-        department: emp.department,
-        taskTitle: title,
-        taskDescription: desc,
-        taskStatus: status,
-        taskDate: daysFromNow(offset - 5),
-        expectedCompletionDate: daysFromNow(offset),
-      });
-    }
-  });
-  await Task.insertMany(tasks);
-
-  console.log('\n✓ Seed complete');
+  console.log('\n✓ Seed complete (Prepared for Live Data)');
+  console.log('  All mock tasks have been removed.');
   console.log('  Login accounts:');
   console.log('    Ankit          -> Ankit@showtimeconsulting.in / ' + employeePassword);
   console.log('    Hari Krishna   -> HariKrishna@showtimeconsulting.in / ' + employeePassword);
