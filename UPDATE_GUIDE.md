@@ -1,6 +1,6 @@
 # Update Guide for AWS and Vercel
 
-Since your application is already deployed, follow these steps to apply the recent changes (new users, Admin roles, and Login page cleanup).
+Since your application is already deployed, follow these steps to apply the recent changes (new users, Admin roles, and preparing for live data).
 
 ---
 
@@ -40,7 +40,9 @@ You need to pull the new code onto your EC2 instance and restart the Docker cont
 
 ## 3. Apply the New User Data (Seeding)
 
-To replace the old demo users with the new ones in your production database, you need to run the seed script. You can do this from your local machine (if you have Node.js installed) or directly on the EC2 instance.
+To replace the old demo users with the new ones and **clear out all mock tasks**, you need to run the seed script.
+
+**Warning:** Running the seed script will delete all existing data in the `Users`, `Employees`, and `Tasks` collections before creating the new accounts.
 
 ### Option A: From your Local Machine (Recommended)
 Run this command from the `backend/` folder on your computer:
@@ -59,7 +61,7 @@ docker exec -it backend npm run seed
 
 ## 4. Final Credentials
 
-After seeding, the new login details will be:
+After seeding, the system will be empty (no tasks) and ready for live data. The new login details will be:
 
 | Name | Email | Password | Role |
 | :--- | :--- | :--- | :--- |
