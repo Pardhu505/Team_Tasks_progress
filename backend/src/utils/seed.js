@@ -32,13 +32,15 @@ const seed = async () => {
   await Promise.all([User.deleteMany({}), Employee.deleteMany({}), Task.deleteMany({})]);
 
   console.log('… creating users');
-  const defaultPassword = 'password123';
+  const adminPassword = 'admin123';
+  const employeePassword = 'employee123';
+
   await User.create([
-    { name: 'Ankit', email: 'Ankit@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
-    { name: 'Hari Krishna', email: 'HariKrishna@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
-    { name: 'Vidya Kolati', email: 'Vidya@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
-    { name: 'Faisal', email: 'Faisal@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
-    { name: 'Pardhasaradhi', email: 'pardhasaradhi@showtimeconsulting.in', password: defaultPassword, role: 'Admin' },
+    { name: 'Ankit', email: 'Ankit@showtimeconsulting.in', password: employeePassword, role: 'Employee' },
+    { name: 'Hari Krishna', email: 'HariKrishna@showtimeconsulting.in', password: employeePassword, role: 'Employee' },
+    { name: 'Vidya Kolati', email: 'Vidya@showtimeconsulting.in', password: employeePassword, role: 'Employee' },
+    { name: 'Faisal', email: 'Faisal@showtimeconsulting.in', password: employeePassword, role: 'Employee' },
+    { name: 'Pardhasaradhi', email: 'pardhasaradhi@showtimeconsulting.in', password: adminPassword, role: 'Admin' },
   ]);
 
   console.log('… creating employees');
@@ -67,13 +69,12 @@ const seed = async () => {
   await Task.insertMany(tasks);
 
   console.log('\n✓ Seed complete');
-  console.log('  Default password for all accounts: ' + defaultPassword);
   console.log('  Login accounts:');
-  console.log('    Ankit          -> Ankit@showtimeconsulting.in');
-  console.log('    Hari Krishna   -> HariKrishna@showtimeconsulting.in');
-  console.log('    Vidya Kolati   -> Vidya@showtimeconsulting.in');
-  console.log('    Faisal         -> Faisal@showtimeconsulting.in');
-  console.log('    Pardhasaradhi  -> pardhasaradhi@showtimeconsulting.in (Admin)');
+  console.log('    Ankit          -> Ankit@showtimeconsulting.in / ' + employeePassword);
+  console.log('    Hari Krishna   -> HariKrishna@showtimeconsulting.in / ' + employeePassword);
+  console.log('    Vidya Kolati   -> Vidya@showtimeconsulting.in / ' + employeePassword);
+  console.log('    Faisal         -> Faisal@showtimeconsulting.in / ' + employeePassword);
+  console.log('    Pardhasaradhi  -> pardhasaradhi@showtimeconsulting.in / ' + adminPassword + ' (Admin)');
 
   await mongoose.connection.close();
   process.exit(0);
