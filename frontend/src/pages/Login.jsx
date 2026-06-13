@@ -6,17 +6,11 @@ import { LogIn, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Logo } from '../components/Logo.jsx';
 
-const DEMO = [
-  { role: 'Admin', email: 'admin@taskflow.dev', password: 'admin123' },
-  { role: 'Manager', email: 'manager@taskflow.dev', password: 'manager123' },
-  { role: 'Employee', email: 'employee@taskflow.dev', password: 'employee123' },
-];
-
 export const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@taskflow.dev');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
 
   const submit = async (e) => {
@@ -72,7 +66,7 @@ export const Login = () => {
           </div>
           <h2 className="font-display text-2xl font-bold text-ink">Sign in</h2>
           <p className="mt-1 text-sm text-muted">
-            Use a demo account below or your credentials.
+            Use your credentials to access your account.
           </p>
 
           <form onSubmit={submit} className="mt-6 space-y-4">
@@ -105,27 +99,6 @@ export const Login = () => {
               Sign in
             </button>
           </form>
-
-          <div className="mt-6 rounded-xl border border-line bg-surface-2 p-3">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-faint">
-              Demo accounts
-            </p>
-            <div className="space-y-1.5">
-              {DEMO.map((d) => (
-                <button
-                  key={d.role}
-                  onClick={() => {
-                    setEmail(d.email);
-                    setPassword(d.password);
-                  }}
-                  className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition hover:bg-surface"
-                >
-                  <span className="font-semibold text-ink">{d.role}</span>
-                  <span className="font-mono text-faint">{d.email}</span>
-                </button>
-              ))}
-            </div>
-          </div>
         </motion.div>
       </div>
     </div>

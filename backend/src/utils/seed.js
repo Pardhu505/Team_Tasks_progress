@@ -32,10 +32,13 @@ const seed = async () => {
   await Promise.all([User.deleteMany({}), Employee.deleteMany({}), Task.deleteMany({})]);
 
   console.log('… creating users');
+  const defaultPassword = 'password123';
   await User.create([
-    { name: 'Admin User', email: 'admin@taskflow.dev', password: 'admin123', role: 'Admin' },
-    { name: 'Manager User', email: 'manager@taskflow.dev', password: 'manager123', role: 'Manager' },
-    { name: 'Employee User', email: 'employee@taskflow.dev', password: 'employee123', role: 'Employee' },
+    { name: 'Ankit', email: 'Ankit@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
+    { name: 'Hari Krishna', email: 'HariKrishna@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
+    { name: 'Vidya Kolati', email: 'Vidya@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
+    { name: 'Faisal', email: 'Faisal@showtimeconsulting.in', password: defaultPassword, role: 'Employee' },
+    { name: 'Pardhasaradhi', email: 'pardhasaradhi@showtimeconsulting.in', password: defaultPassword, role: 'Admin' },
   ]);
 
   console.log('… creating employees');
@@ -64,10 +67,13 @@ const seed = async () => {
   await Task.insertMany(tasks);
 
   console.log('\n✓ Seed complete');
+  console.log('  Default password for all accounts: ' + defaultPassword);
   console.log('  Login accounts:');
-  console.log('    Admin    -> admin@taskflow.dev / admin123');
-  console.log('    Manager  -> manager@taskflow.dev / manager123');
-  console.log('    Employee -> employee@taskflow.dev / employee123');
+  console.log('    Ankit          -> Ankit@showtimeconsulting.in');
+  console.log('    Hari Krishna   -> HariKrishna@showtimeconsulting.in');
+  console.log('    Vidya Kolati   -> Vidya@showtimeconsulting.in');
+  console.log('    Faisal         -> Faisal@showtimeconsulting.in');
+  console.log('    Pardhasaradhi  -> pardhasaradhi@showtimeconsulting.in (Admin)');
 
   await mongoose.connection.close();
   process.exit(0);
