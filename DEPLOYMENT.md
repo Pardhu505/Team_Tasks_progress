@@ -1,16 +1,34 @@
 # Deployment Guide
 
-This guide provides instructions for deploying the TaskFlow system with the frontend on Vercel and the backend on AWS.
+This guide provides instructions for deploying the TaskFlow system with the frontend on Vercel and the backend on AWS, using MongoDB Atlas for the database.
 
 ## Prerequisites
 
 - An [AWS Account](https://aws.amazon.com/)
 - A [Vercel Account](https://vercel.com/)
-- Your MongoDB Atlas connection string (updated in the previous step)
+- A [MongoDB Atlas Account](https://www.mongodb.com/cloud/atlas)
 
 ---
 
-## 1. Backend Deployment (AWS App Runner)
+## 1. MongoDB Atlas Setup
+
+Before deploying the backend, ensure your database is ready.
+
+1.  **Create a Cluster:** If you haven't already, create a free-tier cluster.
+2.  **Network Access:**
+    - Go to **Network Access** in the Atlas sidebar.
+    - Click **Add IP Address**.
+    - For initial setup/deployment to AWS, select **Allow Access from Anywhere** (`0.0.0.0/0`) or add the specific CIDR of your AWS VPC if you know it. *Note: 0.0.0.0/0 is required for App Runner unless you set up a VPC Connector.*
+3.  **Database Access:**
+    - Create a database user (e.g., `poori420`) with **Read and Write to any database** permissions.
+4.  **Get Connection String:**
+    - Click **Connect** > **Connect your application**.
+    - Copy the connection string. It should look like: `mongodb+srv://poori420:<password>@cluster0.53oeybd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+    - **Crucial:** Add `Team_Tasks` before the `?` to specify the database: `...mongodb.net/Team_Tasks?retryWrites...`
+
+---
+
+## 2. Backend Deployment (AWS App Runner)
 
 AWS App Runner is the easiest way to deploy a containerized Node.js application.
 
@@ -23,12 +41,10 @@ AWS App Runner is the easiest way to deploy a containerized Node.js application.
     - **Connect to GitHub:** Select your repository and the branch.
     - **Deployment settings:** Automatic.
 4.  **Configure Build:**
-    - **Runtime:** `Python 3` (Select "Node.js 18" or "Corretto 17" if available, but since we have a Dockerfile, select **"Container image"** as the source instead of source code if you prefer, or let App Runner use the Dockerfile).
-    - **Best approach with Dockerfile:**
-        - Choose **Source code repository**.
-        - Select your repo and branch.
-        - Under **Build settings**, choose **Use a configuration file** or **Configure all settings here**.
-        - Since we have `backend/Dockerfile`, it's recommended to build the image first and push to **Amazon ECR**, then point App Runner to that ECR image.
+    - **Runtime:** Select **Node.js 18**.
+    - **Build command:** `cd backend && npm install`.
+    - **Start command:** `cd backend && node server.js`.
+    - **Port:** `5000`.
 5.  **Environment Variables:** Add the following in the App Runner configuration:
     - `MONGO_URI`: `mongodb+srv://poori420:<PASSWORD>@cluster0.53oeybd.mongodb.net/Team_Tasks?retryWrites=true&w=majority&appName=Cluster0`
     - `JWT_SECRET`: A long random string.
@@ -39,7 +55,7 @@ AWS App Runner is the easiest way to deploy a containerized Node.js application.
 
 ---
 
-## 2. Frontend Deployment (Vercel)
+## 3. Frontend Deployment (Vercel)
 
 Vercel is optimized for React/Vite applications.
 
@@ -59,7 +75,21 @@ Vercel is optimized for React/Vite applications.
 
 ---
 
-## 3. Post-Deployment
+## 4. Seeding the Production Database
+
+To populate your production database with demo accounts and sample tasks:
+
+1.  **Locally:** Open your terminal in the `backend/` folder.
+2.  **Run Seed:** Use the production connection string:
+    ```bash
+    MONGO_URI="your_atlas_connection_string_with_password" npm run seed
+    ```
+    *Example:*
+    ```bash
+    MONGO_URI="mongodb+srv://poori420:your_password@cluster0.53oeybd.mongodb.net/Team_Tasks?retryWrites=true&w=majority" npm run seed
+    ```
+
+## 5. Post-Deployment
 
 1.  **Update CORS:** Once you have your Vercel URL (e.g., `https://taskflow-frontend.vercel.app`), go back to your AWS App Runner service configuration and update the `CLIENT_URL` environment variable to match this URL.
 2.  **Verify:** Open your Vercel URL and check if the dashboard loads data from the backend.
