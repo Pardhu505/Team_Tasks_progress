@@ -8,7 +8,6 @@ import {
   Save,
   X,
   ClipboardList,
-  Lock,
 } from 'lucide-react';
 import api from '../api/client.js';
 import { TASK_STATUSES, formatDate, toInputDate, isOverdue } from '../utils/constants.js';
@@ -17,7 +16,7 @@ import { EmptyState, TableSkeleton } from '../components/States.jsx';
 import { Modal, ConfirmDialog } from '../components/Modal.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const EMPLOYEE_NAMES = ['Ankit Kumar', 'Hari Krishna', 'Vidya', 'Faisal'];
+const EMPLOYEE_NAMES = ['Ankit', 'Hari Krishna', 'Vidya Kolati', 'Faisal', 'Pardhasaradhi'];
 
 const blankTask = () => ({
   employeeName: EMPLOYEE_NAMES[0],
@@ -115,7 +114,7 @@ const TaskFields = ({ task, onChange, onRemove, removable, index }) => (
 
 export const EmployeeRecords = () => {
   const { can } = useAuth();
-  const editable = can('Admin', 'Manager');
+  const editable = can('Admin', 'Manager', 'Employee');
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -216,16 +215,10 @@ export const EmployeeRecords = () => {
             Create, edit and remove employee tasks.
           </p>
         </div>
-        {editable ? (
-          <button className="btn-primary" onClick={openCreate}>
-            <Plus className="h-4 w-4" />
-            Add New Task
-          </button>
-        ) : (
-          <span className="chip bg-surface-2 text-muted">
-            <Lock className="h-3.5 w-3.5" /> Read-only access
-          </span>
-        )}
+        <button className="btn-primary" onClick={openCreate}>
+          <Plus className="h-4 w-4" />
+          Add New Task
+        </button>
       </div>
 
       <div className="card overflow-hidden">
@@ -235,7 +228,7 @@ export const EmployeeRecords = () => {
           <EmptyState
             icon={ClipboardList}
             title="No tasks yet"
-            hint={editable ? 'Click “Add New Task” to create the first one.' : 'No tasks have been assigned yet.'}
+            hint="Click “Add New Task” to create the first one."
           />
         ) : (
           <div className="overflow-x-auto">
@@ -247,7 +240,7 @@ export const EmployeeRecords = () => {
                   <th className="px-5 py-3 font-semibold">Status</th>
                   <th className="hidden px-5 py-3 font-semibold md:table-cell">Task Date</th>
                   <th className="hidden px-5 py-3 font-semibold md:table-cell">Expected</th>
-                  {editable && <th className="px-5 py-3 text-right font-semibold">Actions</th>}
+                  <th className="px-5 py-3 text-right font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -275,26 +268,24 @@ export const EmployeeRecords = () => {
                     <td className="hidden px-5 py-3.5 font-mono text-xs text-muted md:table-cell">
                       {formatDate(t.expectedCompletionDate)}
                     </td>
-                    {editable && (
-                      <td className="px-5 py-3.5">
-                        <div className="flex justify-end gap-1.5">
-                          <button
-                            onClick={() => setEditing({ ...t })}
-                            className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-info/10 hover:text-info"
-                            title="Edit"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => setDeleteId(t._id)}
-                            className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-bad/10 hover:text-bad"
-                            title="Delete"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    )}
+                    <td className="px-5 py-3.5">
+                      <div className="flex justify-end gap-1.5">
+                        <button
+                          onClick={() => setEditing({ ...t })}
+                          className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-info/10 hover:text-info"
+                          title="Edit"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => setDeleteId(t._id)}
+                          className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-bad/10 hover:text-bad"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

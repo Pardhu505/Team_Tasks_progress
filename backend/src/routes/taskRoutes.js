@@ -6,16 +6,16 @@ import {
   updateTask,
   deleteTask,
 } from '../controllers/taskController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect } from '../middleware/auth.js';
 
 const router = Router();
 
 router.use(protect);
-router.route('/').get(getTasks).post(authorize('Admin', 'Manager'), createTask);
+router.route('/').get(getTasks).post(createTask);
 router.get('/employee/:employeeId', getTasksByEmployee);
 router
   .route('/:id')
-  .put(authorize('Admin', 'Manager'), updateTask)
-  .delete(authorize('Admin', 'Manager'), deleteTask);
+  .put(updateTask)
+  .delete(deleteTask);
 
 export default router;
